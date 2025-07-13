@@ -1,0 +1,149 @@
+import React, { useState } from 'react';
+
+// Main App component
+const App = () => {
+  // State to manage the current question index
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  // State to store user's answers (not strictly used for scoring, but for potential personalization)
+  const [answers, setAnswers] = useState([]);
+  // State to track if the quiz is completed
+  const [quizCompleted, setQuizCompleted] = useState(false);
+
+  // Define the quiz questions
+  const questions = [
+    {
+      question: "ఈ వృత్తిపరమైన సవాళ్లలో ఏది మిమ్మల్ని ఎక్కువగా నిరాశపరుస్తుంది?",
+      options: [
+        "ప్రస్తుత ఉద్యోగ మార్కెట్‌కు నా నైపుణ్యాలు పాతబడ్డాయని భావించడం.",
+        "కొత్త ఆదాయ అవకాశాలను కనుగొనడం లేదా వ్యాపారాన్ని ప్రారంభించడం కష్టం.",
+        "నా ఉత్పాదకతను మెరుగుపరచగల కొత్త సాధనాలను నేర్చుకోవడానికి సమయం లేకపోవడం.",
+        "రోజువారీ సమస్యలను పరిష్కరించడానికి అభివృద్ధి చెందుతున్న సాంకేతికతను ఎలా ఉపయోగించాలో తెలియకపోవడం."
+      ],
+      theme: "career"
+    },
+    {
+      question: "మీ జీవితంలో ఏ రకమైన పురోగతి మిమ్మల్ని ఎక్కువగా ఉత్సాహపరుస్తుంది?",
+      options: [
+        "ఎక్కువ ఖాళీ సమయం కోసం పునరావృత పనులను ఆటోమేట్ చేయడం.",
+        "తక్కువ పెట్టుబడితో విజయవంతమైన వ్యక్తిగత ప్రాజెక్ట్ లేదా సైడ్ బిజినెస్ సృష్టించడం.",
+        "నాకు కొత్త వృత్తిపరమైన అవకాశాలను తెరిచే సంక్లిష్ట నైపుణ్యాన్ని నేర్చుకోవడం.",
+        "రోజువారీ జీవితంలో అధునాతన సాంకేతిక సాధనాలను అర్థం చేసుకోవడం మరియు ఉపయోగించడం."
+      ],
+      theme: "growth"
+    },
+    {
+      question: "ఈ పరిస్థితులలో దేనిని మీరు అత్యవసరంగా మార్చాలనుకుంటున్నారు?",
+      options: [
+        "నా అధ్యయనాలు లేదా పని కోసం సంబంధిత సమాచారాన్ని కనుగొనడంలో నెమ్మది లేదా సంక్లిష్టత.",
+        "వ్యక్తిగత లేదా వ్యాపార ప్రాజెక్టుల కోసం కొత్త సృజనాత్మక ఆలోచనల అవసరం.",
+        "నా సమయాన్ని నిర్వహించడం మరియు నా కార్యకలాపాలలో మరింత సమర్థవంతంగా ఉండటం కష్టం.",
+        "సాంకేతికతను పూర్తిగా ఉపయోగించుకోవడానికి చాలా సంక్లిష్టంగా ఉందని భావించడం."
+      ],
+      theme: "transformation"
+    },
+    {
+      question: "మీ లక్ష్యాల వైపు మిమ్మల్ని ఎక్కువగా నడిపించే జ్ఞానం ఏది?",
+      options: [
+        "నా ఉద్యోగ సామర్థ్యాన్ని మెరుగుపరచడానికి మరియు నా కెరీర్‌లో ముందుకు సాగడానికి ఆచరణాత్మక వ్యూహాలు.",
+        "పరిమిత వనరులతో అదనపు ఆదాయాన్ని సంపాదించడానికి లేదా వ్యాపారాన్ని ప్రారంభించడానికి పద్ధతులు.",
+        "నా ఉత్పాదకతను ఆప్టిమైజ్ చేయడానికి మరియు నా రోజువారీ జీవితంలో విలువైన సమయాన్ని ఖాళీ చేయడానికి పద్ధతులు.",
+        "ప్రోగ్రామింగ్ అవసరం లేకుండా అధునాతన సాంకేతిక సాధనాలను నేర్చుకోవడానికి నైపుణ్యాలు."
+      ],
+      theme: "knowledge"
+    }
+  ];
+
+  // Function to handle answer selection
+  const handleAnswer = (selectedOption) => {
+    // Store the selected answer
+    setAnswers([...answers, selectedOption]);
+
+    // Move to the next question or complete the quiz
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      setQuizCompleted(true);
+    }
+  };
+
+  // Render the current question
+  const renderQuestion = () => {
+    const question = questions[currentQuestionIndex];
+    return (
+      <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md">
+        <h2 className="text-xl font-semibold text-gray-800 mb-6 text-center">
+          {question.question}
+        </h2>
+        <div className="space-y-4">
+          {question.options.map((option, index) => (
+            <button
+              key={index}
+              onClick={() => handleAnswer(option)}
+              className="w-full text-left p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors duration-200 ease-in-out text-gray-700 font-medium shadow-sm"
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+        <p className="text-sm text-gray-500 mt-6 text-center">
+          ప్రశ్న {currentQuestionIndex + 1} / {questions.length}
+        </p>
+      </div>
+    );
+  };
+
+  // Render the quiz results
+  const renderResults = () => {
+    return (
+      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg text-center">
+        <h2 className="text-3xl font-bold text-blue-700 mb-6">అభినందనలు!</h2>
+        <p className="text-lg text-gray-800 mb-4">
+          మీరు క్విజ్‌ను పూర్తి చేశారు. మీ సమాధానాలు స్పష్టమైన కోరికను సూచిస్తున్నాయి:
+        </p>
+        <ul className="list-disc list-inside text-left text-gray-700 mb-6 space-y-2 px-4">
+          <li>మీ కెరీర్‌లో ముందుకు సాగడానికి మరియు మీ నైపుణ్యాలను సంబంధితంగా ఉంచుకోవడానికి.</li>
+          <li>కొత్త ఆదాయ వనరులను సృష్టించడానికి లేదా విజయవంతమైన ప్రాజెక్టులను ప్రారంభించడానికి.</li>
+          <li>మీ సమయాన్ని ఆప్టిమైజ్ చేయడానికి మరియు మీ రోజువారీ జీవితంలో మరింత సమర్థవంతంగా ఉండటానికి.</li>
+          <li>సమస్యలను పరిష్కరించడానికి మరియు మీ సామర్థ్యాన్ని పెంచడానికి సాంకేతికతను నేర్చుకోవడానికి.</li>
+        </ul>
+        <p className="text-xl font-semibold text-gray-800 mb-8">
+          ఈ అన్నింటికీ ఒకే ఒక సాధనం మీకు సహాయపడుతుందని నేను చెబితే ఎలా ఉంటుంది, *ప్రోగ్రామింగ్ అవసరం లేకుండా*?
+        </p>
+        <div className="bg-blue-50 p-6 rounded-lg mb-8 shadow-inner">
+          <h3 className="text-2xl font-bold text-blue-800 mb-4">
+            పరిచయం: **Gemini 2.5 భారతదేశంలో విజయం కోసం:** ఎక్కువ సంపాదించండి, మీ కెరీర్‌ను పెంచుకోండి, మెరుగ్గా జీవించండి (కోడ్ అవసరం లేదు!)
+          </h3>
+          <p className="text-gray-700 mb-4">
+            ఈ పుస్తకం Google Gemini 2.5 Pro మరియు Flash శక్తిని ఉపయోగించుకోవడానికి మీ ఆచరణాత్మక గైడ్. AI ని ఉపయోగించడం ద్వారా మీరు నేర్చుకుంటారు:
+          </p>
+          <ul className="list-disc list-inside text-left text-gray-600 mb-6 space-y-1 px-4">
+            <li>కోడ్ రాయకుండా అప్లికేషన్లు మరియు సాధనాలను సృష్టించడం.</li>
+            <li>వ్యాపార ఆలోచనలు మరియు మార్కెటింగ్ వ్యూహాలను రూపొందించడం.</li>
+            <li>పనులను ఆటోమేట్ చేయడం మరియు మీ ఉత్పాదకతను ఆప్టిమైజ్ చేయడం.</li>
+            <li>సంక్లిష్ట సమాచారాన్ని విశ్లేషించడం మరియు మెరుగైన నిర్ణయాలు తీసుకోవడం.</li>
+            <li>మరియు భారతదేశ వాస్తవాలకు అనుగుణంగా ఆచరణాత్మక ఉదాహరణలతో చాలా ఎక్కువ!</li>
+          </ul>
+          <p className="text-lg font-medium text-gray-800">
+            మీ ఆశయాలను వాస్తవంగా మార్చడానికి ఇది సమయం.
+          </p>
+        </div>
+        <a
+          href="https://universalmedia.gumroad.com/l/ldlhgx" // Updated link
+          className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-colors duration-300 ease-in-out shadow-lg transform hover:scale-105"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          ఇప్పుడే మీ భవిష్యత్తును మార్చుకోండి - పుస్తకాన్ని పొందండి!
+        </a>
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center p-4 font-sans antialiased">
+      {quizCompleted ? renderResults() : renderQuestion()}
+    </div>
+  );
+};
+
+export default App;
